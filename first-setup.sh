@@ -13,14 +13,15 @@ mkdir -p /home/$USERNAME/.ssh
 chmod 700 /home/$USERNAME/.ssh
 
 # Copy your public SSH key to the new user
-read -p "Paste your public SSH key: " PUBKEY
-echo $PUBKEY > /home/$USERNAME/.ssh/authorized_keys
+echo "Paste your SSH key and press Ctrl-D when done:"
+cat > /home/$USERNAME/.ssh/authorized_keys
 chmod 600 /home/$USERNAME/.ssh/authorized_keys
 chown -R $USERNAME:$USERNAME /home/$USERNAME/.ssh
 
 # Disable root SSH login and password authentication
-sudo sed -i 's/^PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config
-sudo sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
+sudo sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config
+sudo sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config
+
 
 # Restart SSH to apply changes
 sudo systemctl restart ssh
